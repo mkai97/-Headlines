@@ -6,7 +6,9 @@
    <layout-aside></layout-aside>
 </el-aside>
  <el-container>
-  <el-header>头部</el-header>
+  <el-header>
+    <layout-header></layout-header>
+  </el-header>
   <el-main>中间</el-main>
    </el-container>
    </el-container>
@@ -14,9 +16,11 @@
 
 <script>
 import layoutAside from '../../componts/home/layout-aside'
+import layoutHeader from '../../componts/home/layout-header'
 export default {
   components: {
-    'layout-aside': layoutAside
+    'layout-aside': layoutAside,
+    'layout-header': layoutHeader
   }
 }
 </script>
