@@ -71,11 +71,13 @@ export default {
         if (isOk) {
           console.log('校验成功')
           this.$axios({
-            methods: 'post',
+            method: 'post',
             url: '/authorizations',
             data: this.formData
           }).then(result => {
             console.log(result.data.data)
+            window.localStorage.setItem('user-info', JSON.stringify(result.data.data))
+            this.$router.push('/home')
           })
         }
       })
