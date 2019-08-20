@@ -6,19 +6,20 @@
       <span>江苏传智播客教育科技股份有限公司</span>
     </el-col>
     <el-col class="layout-right" :span="3">
-      <img src="../../assets/img/avatar.jpg" alt />
+      <!-- <img src="../../assets/img/avatar.jpg" alt /> -->
+       <img :src="user.photo ? user.photo : defaultImg" alt />
       <!-- 两个插槽  匿名插槽  具名插槽 -->
-      <el-dropdown trigger="click">
+      <el-dropdown trigger="click" @command='commandAction'>
         <!-- 匿名插槽 -->
         <span class="el-dropdown-link">
-          我是56123
+         {{ user.name }}
           <i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <!-- 具名插槽 dropdown-->
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>个人信息</el-dropdown-item>
-          <el-dropdown-item>git地址</el-dropdown-item>
-          <el-dropdown-item>退出</el-dropdown-item>
+          <el-dropdown-item command="account">个人信息</el-dropdown-item>
+          <el-dropdown-item command='git'>git地址</el-dropdown-item>
+          <el-dropdown-item  command='out'>退出</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </el-col>
@@ -26,7 +27,40 @@
 </template>
 <script>
 export default {
+  data () {
+    return {
+      user: {
 
+      },
+      defaultImg: require('../../assets/img/avatar.jpg')
+    }
+  },
+  methods: {
+    getUserInfo () {
+      let userInfo = window.localStorage.getItem('user-info')
+      let token = userInfo ? JSON.parse(userInfo).token : null
+      token && this.$axios({
+        url: '/user/profile',
+        headers: { 'Authorization': `Bearer ${token}` }
+      }).then(result => {
+        this.user = result.data.data
+      })
+    },
+    commandAction (command) {
+      if (command === 'account') {
+
+      } else if (command === 'git') {
+        window.location.href = 'https://github.com/shuiruohanyu/81heimatoutiao'
+      } else {
+        window.localStorage.clear() // 擦除本项目在浏览器上所有前端缓存
+        this.$router.push('/login')
+      }
+    }
+
+  },
+  created () {
+    this.getUserInfo()
+  }
 }
 </script>
 <style lang='less' scoped>
