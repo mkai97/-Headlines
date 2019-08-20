@@ -78,6 +78,11 @@ export default {
             console.log(result.data.data)
             window.localStorage.setItem('user-info', JSON.stringify(result.data.data))
             this.$router.push('/home')
+          }).catch(() => {
+            this.$message({
+              message: 'erro,用户名或密码错误',
+              type: 'warning'
+            })
           })
         }
       })
