@@ -15,12 +15,6 @@
 </template>
 
 <script>
-import layoutAside from '../../componts/home/layout-aside'
-import layoutHeader from '../../componts/home/layout-header'
-export default {
-  components: {
-    'layout-aside': layoutAside,
-    'layout-header': layoutHeader
-  }
-}
+export default {}
+
 </script>
