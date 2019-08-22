@@ -1,7 +1,7 @@
 <template>
      <!-- 用el-row 和el-col布局 -->
   <el-row class="layout-header" type="flex" justify="space-between">
-    <el-col :span="6" class="left-header">
+    <el-col :span="16" class="left-header">
       <i class="el-icon-s-unfold"></i>
       <span>江苏传智播客教育科技股份有限公司</span>
     </el-col>
@@ -37,18 +37,22 @@ export default {
   },
   methods: {
     getUserInfo () {
-      let userInfo = window.localStorage.getItem('user-info')
-      let token = userInfo ? JSON.parse(userInfo).token : null
-      token && this.$axios({
-        url: '/user/profile',
-        headers: { 'Authorization': `Bearer ${token}` }
+      this.$axios({
+        url: '/user/profile'
+
+      // let userInfo = window.localStorage.getItem('user-info')
+      // let token = userInfo ? JSON.parse(userInfo).token : null
+      // token && this.$axios({
+      //   url: '/user/profile',
+      //   headers: { 'Authorization': `Bearer ${token}` }
       }).then(result => {
-        this.user = result.data.data
+        this.user = result.data
+        console.log(result.data)
       })
     },
     commandAction (command) {
       if (command === 'account') {
-
+        this.$router.push('/home/account') // 跳转到账户信息
       } else if (command === 'git') {
         window.location.href = 'https://github.com/shuiruohanyu/81heimatoutiao'
       } else {

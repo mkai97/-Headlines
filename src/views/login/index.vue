@@ -75,14 +75,14 @@ export default {
             url: '/authorizations',
             data: this.formData
           }).then(result => {
-            console.log(result.data.data)
-            window.localStorage.setItem('user-info', JSON.stringify(result.data.data))
+            console.log(result.data)
+            window.localStorage.setItem('user-info', JSON.stringify(result.data))
             this.$router.push('/home')
-          }).catch(() => {
-            this.$message({
-              message: 'erro,用户名或密码错误',
-              type: 'warning'
-            })
+          // }).catch(() => {
+          //   this.$message({
+          //     message: 'erro,用户名或密码错误',
+          //     type: 'warning'
+          //   })
           })
         }
       })
