@@ -37,7 +37,7 @@ axios.interceptors.request.use(function (config) {
       break
   }
   Message({ message, type: 'warning' })
-  return new Promise()
+  return new Promise(function () {})
 })
 axios.interceptors.response.use(function (response) {
   return response.data ? response.data : {}
