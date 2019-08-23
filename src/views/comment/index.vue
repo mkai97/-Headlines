@@ -1,5 +1,5 @@
 <template>
-  <el-card>
+  <el-card v-loading = 'loading'>
     <!-- el-card 具名插槽 header -->
     <bread-crumb slot="header">
       <!-- 面包屑的插槽 具名插槽  title-->
@@ -26,6 +26,7 @@
       <el-pagination background layout="prev, pager, next" :page-size="page.pageSize"
         :total="page.total"
         :current-page="page.currentPage"
+        @current-change="changePage"
        ></el-pagination>
     </el-row>
   </el-card>
@@ -38,12 +39,17 @@ export default {
       page: {
         currentPage: 1,
         pageSize: 10,
-        total: 200
+        total: 0
       },
-      list: []
+      list: [],
+      loading: false
     }
   },
   methods: {
+    changePage (newPage) {
+      this.page.currentPage = newPage
+      this.getComments()
+    },
     closeOrOpen (row) {
       let mess = row.comment_status ? '关闭' : '打开'
       console.log(row.id, row.comment_status)
@@ -66,13 +72,19 @@ export default {
     // axios 中 有一个对象存储的就是query参数  params
     // axios 中 有一个对象存储的就是body参数  data
     getComments () {
+      this.loading = true
+      let pageParams = { page: this.page.currentPage,
+        per_page: this.page.pageSize } // 页码参数
       this.$axios({
         url: '/articles',
         params: {
-          response_type: 'comment'
+          response_type: 'comment',
+          ...pageParams
         }
       }).then(result => {
         this.list = result.data.results
+        this.page.total = result.data.total_count
+        this.loading = false
       })
     },
     // row 当条数据对象
