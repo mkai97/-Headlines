@@ -1,11 +1,15 @@
 import axios from 'axios'
 import { Message } from 'element-ui'
+import JSONBig from 'json-bigint'
 axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0'
 
 axios.interceptors.request.use(function (config) {
   let userInfo = window.localStorage.getItem('user-info')
   let token = userInfo ? JSON.parse(userInfo).token : null
   config.headers.Authorization = `Bearer ${token}`
+  axios.defaults.transformResponse = [function (data) {
+    return data ? JSONBig.parse(data) : {}
+  }]
   return config
 }, function (error) {
   let Code = error.response ? error.response.status : ''

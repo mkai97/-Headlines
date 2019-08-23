@@ -8,11 +8,11 @@
 
          <el-table :data="list"
                    style="width: 100%">
-           <el-table-column width="500" prop="title"
+           <el-table-column width="400" prop="title"
                             label="标题"
                            >
            </el-table-column>
-            <el-table-column prop="comment_status"
+            <el-table-column :formatter="formatter" prop="comment_status"
                             label="评论状态"
                            >
            </el-table-column>
@@ -27,8 +27,11 @@
               <el-table-column prop=""
                             label="操作"
                            >
-                           <el-button type="text">修改</el-button>
-       <el-button type="text">关闭评论</el-button>
+                           <template slot-scope="obj">
+                         <el-button  type="text">修改</el-button>
+       <el-button @click="closeOropen(obj.row)" :style="{color:obj.row.comment_status ? '#E6A23C':'#409EFE'}"  type="text">{{ obj.row.comment_status ? "关闭评论" : "打开评论" }}</el-button>
+                           </template>
+
            </el-table-column>
          </el-table>
 
@@ -43,6 +46,20 @@ export default {
     }
   },
   methods: {
+    closeOrOpen (row) {
+      let mess = row.comment_status ? '关闭' : '打开'
+      this.$confirm(`您确定要${mess}评论吗`, '提示').then(() => {
+        this.$axios({
+          method: 'put',
+          url: '/comments/status',
+          params: { article_id: row.id },
+          data: { allow_comment: !row.comment_status } // 状态是反着的
+        }).then(() => {
+          // 如果进入到then函数 一定成功
+          this.getComments()
+        })
+      })
+    },
     // 查询评论列表数据
     // query参数 => 指的是get参数 => url链接上
     // post参数 => 指的是body参数
