@@ -47,10 +47,10 @@
         </div>
         <div class="right">
           <span>
-            <i class="el-icon-edit">修改</i>
+            <i class="el-icon-edit"  style='cursor:pointer'>修改</i>
           </span>
           <span>
-            <i class="el-icon-delete">删除</i>
+            <i class="el-icon-delete"  @click="delItem(item)" style='cursor:pointer'>删除</i>
           </span>
         </div>
       </div>
@@ -79,6 +79,16 @@ export default {
     }
   },
   methods: {
+    delItem (item) {
+      this.$confirm('您确定删除此条文章?', '提示').then(() => {
+        this.$axios({
+          method: 'delete',
+          url: `/articles/${item.id.toString()}`
+        }).then(result => {
+          this.getArticles(this.getConditions())
+        })
+      })
+    },
     getConditions () {
       let { status, channel_id: cid, dateRange } = this.formData
       let params = {
